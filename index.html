@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Earth Model with Three.js</title>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Set up the scene, camera, and renderer
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Create a sphere geometry for the Earth
+const geometry = new THREE.SphereGeometry(4, 32, 32); // Radius, width segments, height segments
+
+// Load the Earth texture map
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load('./01-3.jpg'); // Provide the correct path
+const material = new THREE.MeshBasicMaterial({ map: texture });
+
+// Create the Earth mesh and add it to the scene
+const earth = new THREE.Mesh(geometry, material);
+scene.add(earth);
+
+// Position the camera
+camera.position.z = 15;
+
+// Create an animation loop
+const animate = () => {
+  requestAnimationFrame(animate);
+
+  // Rotate the Earth
+  earth.rotation.y += 0.005;
+
+  renderer.render(scene, camera);
+};
+
+animate();
+
+
+// Add ambient light
+const ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
+
+// Add directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(10, 10, 10);
+scene.add(directionalLight);
+
+  </script>
+</body>
+</html>
